@@ -1,28 +1,24 @@
-// src/utils/index.js
-import dotenv from 'dotenv';
-import express from 'express';
 import mongoose from 'mongoose';
-const app = express();
-// by default dotenv.config() will look for .env in your project root
-dotenv.config();        
+import express from 'express';
+import { DB_NAME } from '../utils/constants.js';
 
-// constants.js lives alongside this file in `utils/`
-import { DB_NAME } from './constants.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: 'E:/Backend Development/newProject/backendmongoose/src/.env' });
 
-// connectDb is in src/db/index.js, so go up one level into db/
-import connectDb from '../db/index.js';
+const connectDb = async ()=>{
+        console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}/${DB_NAME}`);
 
-(async () => {
-  try {
-    // await the connection so Node doesn’t exit immediately
-    await connectDb();
-    console.log('Connected to MongoDB');
-    const PORT = process.env.PORT || 8000;
-    app.listen(PORT, () => {
-      console.log(`Server listening on http://localhost:${PORT}`);
-    });
-  } catch (err) {
-    console.error(' Error connecting to MongoDB:', err);
-    process.exit(1);
-  }
-})();
+    try{
+        console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}/${DB_NAME}`);
+        await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`, {
+        });
+        console.log('Connected to MongoDB at 3000');
+        
+    }catch(err){
+        console.error('Error connecting to MongoDB:', err);
+        process.exit(1)
+    }
+}
+export default connectDb;
+
+
